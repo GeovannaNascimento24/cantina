@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template_string, request, redirect, url_for
 import sqlite3 
 
@@ -19,11 +18,20 @@ def init_db ():
     connection.commit()
     connection.close()
 
-@app.route('/alunos', methods=['GET', 'POST'])
-def professores():
+@app.route('/Cantina_legal', methods=['GET', 'POST'])
+def alunos():
     connection = sqlite3.connect('Cantina_legal.db')
     cursor = connection.cursor()
 
     if request.method == 'POST':
         nome = request.form['nome']
-        turma = request.form['']
+        turma = request.form['turma']
+        email = request.form['email']
+        senha = request.form['senha']
+
+        cursor.execute("INNSERT INTO alunos (nome, turma, email, senha) VALUES (?, ?, ?, ?)", (nome, turma, email, senha))
+        connection.commit()
+
+        cursor.execute("SELECT * FROM alunos")
+        alunos = cursor.fetchall()
+        connection.close()
